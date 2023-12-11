@@ -6,6 +6,7 @@ import adsds126.com.board.domain.comment.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class CommentController {
     }
 
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Comment> createComment(
             @RequestParam Long boardId,
             @RequestParam Long userId,
@@ -30,7 +32,8 @@ public class CommentController {
         return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{commentId}")
+    @PatchMapping("/{commentId}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Comment> updateComment(
             @PathVariable Long commentId,
             @RequestBody CommentDto.Update commentDto) {
@@ -39,12 +42,14 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
         commentService.deleteComment(commentId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/board/{boardId}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Comment>> getAllCommentsByBoardId(@PathVariable Long boardId) {
         List<Comment> comments = commentService.getAllCommentsByBoardId(boardId);
         return new ResponseEntity<>(comments, HttpStatus.OK);
