@@ -26,7 +26,7 @@ public class BoardDto {
     @AllArgsConstructor
     public static class Update {
         @NotNull
-        private Long boardReq;
+        private Long boardSeq;
         @NotNull
         @Size(max = 100)
         private String title;
@@ -40,7 +40,7 @@ public class BoardDto {
     @AllArgsConstructor
     public static class Response {
         @NotNull
-        private Long boardReq;
+        private Long boardSeq;
 
         @NotNull
         @Size(max = 100)
@@ -51,7 +51,7 @@ public class BoardDto {
         private String content;
 
         private LocalDateTime regDate;
-        private LocalDateTime upDate;
+        private LocalDateTime uptDate;
     }
 
 }

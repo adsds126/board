@@ -14,6 +14,7 @@ public class ApiResponse<T> {
     private final static int FAILED = 500;
     private final static String SUCCESS_MESSAGE = "SUCCESS";
     private final static String FAILED_MESSAGE = "server error occurred";
+    private final static String BOARD_FAILED_MESSAGE = "해당 게시글을 찾을 수 없습니다.";
     private final static String INVALID_ACCESS_TOKEN = "Invalid access token.";
     private final static String INVALID_REFRESH_TOKEN = "Invalid refresh token.";
     private final static String NOT_EXPIRED_TOKEN_YET = "Not expired token yet.";
@@ -30,6 +31,9 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> fail() {
         return new ApiResponse(new ApiResponseHeader(FAILED, FAILED_MESSAGE), null);
+    }
+    public static <T> ApiResponse<T> failBoard() {
+        return new ApiResponse(new ApiResponseHeader(FAILED, BOARD_FAILED_MESSAGE), null);
     }
 
     public static <T> ApiResponse<T> invalidAccessToken() {

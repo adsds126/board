@@ -26,7 +26,7 @@ public class Comment {
     @Id
     @Column(name = "COMMENT_SEQ")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentReq;
+    private Long commentSeq;
 
     @NotNull
     @Size(max = 255)

@@ -34,11 +34,13 @@ public class BoardService {
                 .uptDate(LocalDateTime.now())
                 .build();
 
-        return boardRepository.save(newBoard);
+        Board savedBoard = boardRepository.save(newBoard);
+
+        return savedBoard;
     }
     public Board updateBoard(BoardDto.Update boardDto) {
-        Board existingBoard = boardRepository.findById(boardDto.getBoardReq())
-                .orElseThrow(() -> new EntityNotFoundException("Board not found with ID: " + boardDto.getBoardReq()));
+        Board existingBoard = boardRepository.findById(boardDto.getBoardSeq())
+                .orElseThrow(() -> new EntityNotFoundException("Board not found with ID: " + boardDto.getBoardSeq()));
 
         existingBoard.setTitle(boardDto.getTitle());
         existingBoard.setContent(boardDto.getContent());
@@ -59,9 +61,24 @@ public class BoardService {
 
         boardRepository.delete(existingBoard);
     }
+    public Board findByBoardSeq(Long boardSeq) {
+        return boardRepository.findByBoardSeq(boardSeq);
+    }
+    public BoardDto.Response convertToResponseDto(Board board) {
+        return new BoardDto.Response(
+                board.getBoardSeq(),
+                board.getTitle(),
+                board.getContent(),
+                board.getRegDate(),
+                board.getUptDate());
+    }
 
-//    public List<BoardDto.Response> getBoard(Long userSeq) {
-//        List<BoardDto.Response> boards = boardRepository.findAllByUserSeq(userSeq);
-//        return boards;
-//    }
+    public Board getBoard(String userId) {
+        Board board = boardRepository.findByUserUserId(userId);
+        return board;
+    }
+    public List<BoardDto.Response> getAllBoards(String userId){
+        List<BoardDto.Response> allBoards = boardRepository.findAllByUserUserId(userId);
+        return allBoards;
+    }
 }

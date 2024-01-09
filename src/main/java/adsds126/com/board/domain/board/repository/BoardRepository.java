@@ -12,5 +12,6 @@ import java.util.Optional;
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
     Board findByBoardSeq(Long boardSeq);
-    //List<BoardDto.Response> findAllByUserSeq(Long userSeq);
+    Board findByUserUserId(String userId);
+    List<BoardDto.Response> findAllByUserUserId(String userId);
 }
