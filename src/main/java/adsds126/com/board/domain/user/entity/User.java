@@ -1,5 +1,6 @@
 package adsds126.com.board.domain.user.entity;
 
+import adsds126.com.board.domain.comment.entity.Comment;
 import adsds126.com.board.oauth.entity.ProviderType;
 import adsds126.com.board.oauth.entity.RoleType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,6 +13,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -74,6 +77,10 @@ public class User {
     @Column(name = "MODIFIED_AT")
     @NotNull
     private LocalDateTime modifiedAt;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private final List<Comment> comments = new ArrayList<>();
 
     public User(
             @NotNull @Size(max = 64) String userId,

@@ -40,6 +40,7 @@ public class  Board {
     @Size(max = 512)
     private String content;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "USER_ID")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -51,6 +52,7 @@ public class  Board {
     @LastModifiedDate
     private LocalDateTime uptDate;     //수정 날짜
 
+    @JsonIgnore
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private final List<Comment> comments = new ArrayList<>();
 }

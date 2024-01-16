@@ -2,6 +2,7 @@ package adsds126.com.board.domain.comment.entity;
 
 import adsds126.com.board.domain.board.entity.Board;
 import adsds126.com.board.domain.user.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,12 +34,14 @@ public class Comment {
     @Column(name = "TEXT", length = 100)
     private String text;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "board_id")
+    @JoinColumn(name = "board_fk")
     private Board board;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_fk")
     private User user;
 
     @CreatedDate

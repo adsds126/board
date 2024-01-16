@@ -9,8 +9,10 @@ import adsds126.com.board.domain.user.entity.User;
 import adsds126.com.board.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,13 +33,10 @@ public class CommentService {
         this.userRepository = userRepository;
     }
 
-    public Comment createComment(Long boardSeq, Long userSeq, CommentDto.Post commentDto) {
+    public Comment createComment(Long boardSeq, String userId, CommentDto.Post commentDto) {
         Board board = boardRepository.findById(boardSeq)
                 .orElseThrow(() -> new EntityNotFoundException("Board not found with ID: " + boardSeq));
-
-        User user = userRepository.findById(userSeq)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userSeq));
-
+        User user = userRepository.findByUserId(userId);
         Comment newComment = new Comment();
         newComment.setText(commentDto.getText());
         newComment.setBoard(board);
@@ -45,12 +44,13 @@ public class CommentService {
         newComment.setRegDate(LocalDateTime.now());
         newComment.setUptDate(LocalDateTime.now());
 
-        return commentRepository.save(newComment);
+        newComment = commentRepository.save(newComment);
+        return newComment;
     }
 
-    public Comment updateComment(Long commentId, CommentDto.Update commentDto) {
-        Comment existingComment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new EntityNotFoundException("Comment not found with ID: " + commentId));
+    public Comment updateComment(Long commentSeq, CommentDto.Update commentDto) {
+        Comment existingComment = commentRepository.findById(commentSeq)
+                .orElseThrow(() -> new EntityNotFoundException("Comment not found with ID: " + commentSeq));
 
         existingComment.setText(commentDto.getText());
         existingComment.setUptDate(LocalDateTime.now());
@@ -58,12 +58,12 @@ public class CommentService {
         return commentRepository.save(existingComment);
     }
 
-    public void deleteComment(Long commentId) {
-        commentRepository.findById(commentId)
+    public void deleteComment(Long commentSeq) {
+        commentRepository.findById(commentSeq)
                 .ifPresent(commentRepository::delete);
     }
 
-    public List<Comment> getAllCommentsByBoardId(Long boardSeq) {
+    public List<Comment> getAllCommentsByBoardSeq(Long boardSeq) {
         return commentRepository.findAllByBoard_BoardSeq(boardSeq);
     }
 }
